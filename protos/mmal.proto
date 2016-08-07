@@ -1,0 +1,177 @@
+syntax = "proto3";
+
+option java_package = "org.mmal.proto";
+
+package mmal;
+
+service MMAL{
+  rpc RPCRequest(Request) returns (Reply) {}
+}
+
+message Path {
+    enum PathType {
+        LEAF = 0;
+        NODE = 1;
+    }
+    repeated string parts       = 1;
+    repeated string columns     = 2;
+    PathType type               = 3;
+    repeated PathChild children = 4;
+}
+
+message PathChild {
+    enum ChildType {
+        LEAF = 0;
+        NODE = 1;
+    }
+    string path = 1;
+}
+
+message Error {
+  enum ErrorType {
+    INVALID_PATH = 0;
+    EXCEPTION    = 1;
+  }
+
+  ErrorType type = 1;
+  string message = 2;
+}
+
+message Request {
+  enum RequestType {
+    PING = 0;
+    PATH = 1;
+    TIMESERIES = 2;
+  }
+
+  string id                    = 1;
+  RequestType type             = 2;
+  PathRequest path_request     = 3;
+  PingRequest ping_request     = 4;
+  TimeSeriesRequest ts_request = 5;
+}
+
+message Reply {
+  enum ReplyType {
+    PONG = 0;
+    PATH = 1;
+    TIMESERIES = 2;
+  }
+
+  string id                = 1;
+  Error error              = 2;
+  ReplyType type           = 3;
+  PathReply path_reply     = 4;
+  PongReply pong_reply     = 5;
+  TimeSeriesReply ts_reply = 6;
+}
+
+message PingRequest {
+  string ping = 1;
+}
+
+message PongReply {
+  string pong = 1;
+  Error error = 2;
+}
+
+message PathRequest {
+  repeated Path paths = 1;
+  bool children       = 2;
+}
+
+message PathReply {
+  repeated Path paths = 1;
+}
+
+message TimeSeriesRequest {
+  string id               = 1;
+  int32 priority          = 2;
+  int32 offset            = 3;
+  int32 limit             = 4;
+  repeated Path paths     = 5;
+  repeated string columns = 6;
+}
+
+message TimeSeriesReply {
+  string id                       = 1;
+  repeated TimeSeries time_series = 2;
+  repeated Path paths             = 3;
+  Error error                     = 4;
+}
+
+enum Type {
+  TYPE_DOUBLE   = 0;
+  TYPE_FLOAT    = 1;
+  TYPE_INT64    = 2;
+  TYPE_UINT64   = 3;
+  TYPE_INT32    = 4;
+  TYPE_FIXED64  = 5;
+  TYPE_FIXED32  = 6;
+  TYPE_BOOL     = 7;
+  TYPE_STRING   = 8;
+  TYPE_BYTES    = 9;
+  TYPE_UINT32   = 10;
+  TYPE_ENUM     = 11;
+  TYPE_SFIXED32 = 12;
+  TYPE_SFIXED64 = 13;
+  TYPE_SINT32   = 14;
+  TYPE_SINT64   = 15;
+};
+
+message TimeSeries {
+  message Column {
+    repeated double doubles     = 1;
+    repeated float floats       = 2;
+    repeated int32 int32s       = 3;
+    repeated int64 int64s       = 4;
+    repeated uint32 uint32s     = 5;
+    repeated uint64 uint64s     = 6;
+    repeated sint32 sint32s     = 7;
+    repeated sint64 sint64s     = 8;
+    repeated fixed32 fixed32s   = 9;
+    repeated fixed64 fixed64s   = 10;
+    repeated sfixed32 sfixed32s = 11;
+    repeated sfixed64 sfixed64s = 12;
+    repeated bool bools         = 13;
+    repeated string strings     = 14;
+    repeated bytes raw_bytes    = 15;
+
+    Type type   = 16;
+    string name = 17;
+  }
+
+  string id               = 1;
+  string version          = 2;
+  repeated Column columns = 3;
+  KeyValues metadata      = 4;
+}
+
+message KeyValues {
+  repeated KeyValuePair key_values = 1;
+}
+
+message KeyValuePair {
+  string key = 1;
+  Value values = 2;
+}
+
+message Value {
+  repeated double doubles     = 1;
+  repeated float floats       = 2;
+  repeated int32 int32s       = 3;
+  repeated int64 int64s       = 4;
+  repeated uint32 uint32s     = 5;
+  repeated uint64 uint64s     = 6;
+  repeated sint32 sint32s     = 7;
+  repeated sint64 sint64s     = 8;
+  repeated fixed32 fixed32s   = 9;
+  repeated fixed64 fixed64s   = 10;
+  repeated sfixed32 sfixed32s = 11;
+  repeated sfixed64 sfixed64s = 12;
+  repeated bool bools         = 13;
+  repeated string strings     = 14;
+  repeated bytes raw_bytes    = 15;
+
+  Type type = 16;
+}
