@@ -22,9 +22,9 @@ setup.py:
 tag:
 	$(shell mkdir -p mmal/proto; echo "VERSION = \"$(CUR_TAG)\"" > mmal/proto/__init__.py)
 
-.PHONY: upload
-upload: setup tag
-	python setup.py sdist upload -r mmal
+.PHONY: publish
+publish: mmal/proto/mmal_pb2.py setup tag
+	python setup.py sdist upload -r pypi
 
 mmal/proto/mmal_pb2.py:
 	mkdir -p mmal/proto/;        \
