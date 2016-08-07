@@ -18,12 +18,9 @@ setup.py:
 	@$(shell cp setup.py.template setup.py)
 	$(shell sed -i -e "s/\$$TAG/$(MAJOR)\.$(MINOR)\.$(REV)/g" setup.py)
 
-.PHONY: tag
-tag:
-	$(shell mkdir -p mmal/proto; echo "VERSION = \"$(CUR_TAG)\"" > mmal/proto/__init__.py)
 
 .PHONY: publish
-publish: mmal/proto/mmal_pb2.py setup tag
+publish: mmal/proto/mmal_pb2.py setup
 	python setup.py sdist upload -r pypi
 
 mmal/proto/mmal_pb2.py:
