@@ -1,2 +1,2 @@
 from mmal_pb2 import *
-VERSION = "0.0.0"
+VERSION = "0.0.1"
