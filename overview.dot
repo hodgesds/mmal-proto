@@ -1,0 +1,63 @@
+
+digraph G {
+
+	subgraph cluster_0 {
+		node [style=filled];
+		py_client;
+		java_client;
+		go_client;
+		label = "MMAL Client";
+	}
+
+	subgraph cluster_1 {
+		node [style=filled];
+        py_server;
+        java_server;
+        go_server;
+		label = "MMAL Server";
+	}
+
+	subgraph cluster_2 {
+		node [style=filled];
+		protocol;
+		label = "gRPC/HTTP2";
+		color=black;
+	}
+
+
+    py_server -> protocol[dir=both,color="red:blue"];
+    java_server -> protocol[dir=both,color="red:blue"];
+    go_server -> protocol[dir=both,color="red:blue"];
+
+
+	protocol -> py_client[dir=both,color="red:blue"];
+    protocol -> java_client[dir=both,color="red:blue"];
+    protocol -> go_client[dir=both,color="red:blue"];
+
+    py_client [shape=oval,label="python"];
+    java_client [shape=oval,label="java"];
+    go_client [shape=oval,label="go"];
+
+    py_server [shape=oval,label="python"];
+    java_server [shape=oval,label="java"];
+    go_server [shape=oval,label="go"];
+
+    py_client -> pandas;
+
+	protocol [shape=rectangle,label="protobuf"];
+
+	sqlite[shape=rectangle];
+	mysql[shape=rectangle];
+	postgres[shape=rectangle];
+
+	sqlite   -> py_server[dir=both,color="yellow2:green"];
+	mysql    -> py_server[dir=both,color="yellow2:green"];
+	postgres -> py_server[dir=both,color="yellow2:green"];
+	sqlite   -> java_server[dir=both,color="navy:orangered"];
+	mysql    -> java_server[dir=both,color="navy:orangered"];
+	postgres -> java_server[dir=both,color="navy:orangered"];
+	sqlite   -> go_server[dir=both,color="dodgerblue3:indigo"];
+	mysql    -> go_server[dir=both,color="dodgerblue3:indigo"];
+	postgres -> go_server[dir=both,color="dodgerblue3:indigo"];
+}
+
