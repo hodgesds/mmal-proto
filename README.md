@@ -1,4 +1,4 @@
-# mmal-proto
+# MMAL Protobuf/gRPC Bindings
 MMAL-proto is a library to build protobuf and gRPC client/server files for
 various languages.
 
@@ -9,3 +9,6 @@ To generate protobuf bindings simply run:
 To clean any temp files created run:
 
 `make clean`
+
+# MMAL Overview
+![overview](overview.png?raw=true)
