@@ -11,4 +11,5 @@ To clean any temp files created run:
 `make clean`
 
 # MMAL Overview
+This is a rough overview of the current MMAL architecture.
 ![overview](overview.png?raw=true)
